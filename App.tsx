@@ -28,10 +28,8 @@ function App() {
   const isLoadingComplete = useCachedResources();
 
   useEffect(() => {
-    // this is done when component mounts
     return () => {
-      // this is done when component unmounts
-      client.disconnectUser();
+        client.disconnectUser();
     };
   }, []);
 

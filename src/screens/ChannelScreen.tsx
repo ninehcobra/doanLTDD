@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet,Image } from "react-native";
 import React from "react";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { Channel, MessageList, MessageInput } from "stream-chat-expo";
@@ -8,12 +8,15 @@ const ChannelScreen = () => {
   const navigation = useNavigation();
   const channel = route.params?.channel;
 
-  // navigation.setOptions({ title: channel?.data?.name || "Channel" });
+
 
   if (!channel) {
     return (
       <View style={styles.errorContainer}>
-        <Text style={styles.errorText}>Select a channel from the list!</Text>
+        <Image>
+
+        </Image>
+        <Text style={styles.errorText}>Chọn kênh để bắt đầu trò chuyện</Text>
       </View>
     );
   }

@@ -137,7 +137,7 @@ const CustomDrawerContent = (props) => {
       <Image style={{height:40,width:40,margin:5}} source={require("../image/github.png")} ></Image>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => {
-                    Linking.openURL(`mailto:20520884@gm.uit.ed.vn?subject=Hỗ trợ&body=${message}`)
+                    Linking.openURL(`mailto:20520884@gm.uit.edu.vn,ttbexinhtt2903@gmail.com,20520380@gm.uit.edu.vn,20520674@gm.uit.edu.vn,20520713@gm.uit.edu.vn?subject=Hỗ trợ&body=${message}`)
                 }}>
         <Image style={{height:40,width:40,margin:5}} source={require("../image/information.png")}></Image>
       </TouchableOpacity>

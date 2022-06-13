@@ -21,14 +21,14 @@ const SignUpScreen = () => {
   const { client } = useChatContext();
 
   const connectUser = async () => {
-    // sign in with your backend and get the user token
+
 
     await client.connectUser(
       {
         id: username,
         name: name,
         image:
-          "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/elon.png",
+          "https://external-preview.redd.it/82W0P2ZtzufVGT9jofempucEDQvGHuZnIcZF3uIgjxo.png?format=pjpg&auto=webp&s=13cfd670a3568268ac713a1ab44648c30f807058",
       },
       client.devToken(username)
     );
@@ -42,45 +42,11 @@ const SignUpScreen = () => {
   const signUp = () => {
     connectUser();
 
-    // navigate to the home page
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
-        <Text style={styles.title}>Welcome back</Text>
-        <Text style={styles.subtitle}>We are so excited to see you again</Text>
 
-        <Text style={styles.text}>ACCOUNT INFORMATION</Text>
-
-        <TextInput
-          value={username}
-          onChangeText={setUsername}
-          style={styles.input}
-          placeholderTextColor="grey"
-          placeholder="Username"
-        />
-        <TextInput
-          value={name}
-          onChangeText={setName}
-          style={styles.input}
-          placeholderTextColor="grey"
-          placeholder="Full name"
-        />
-        <TextInput
-          value={password}
-          onChangeText={setPassword}
-          style={styles.input}
-          placeholderTextColor="grey"
-          placeholder="Password"
-        />
-
-        <Text style={styles.forgotPasswordText}>Forgot password?</Text>
-
-        <Pressable style={styles.button} onPress={signUp}>
-          <Text style={styles.buttonText}>Login</Text>
-        </Pressable>
-      </ScrollView>
     </SafeAreaView>
   );
 };

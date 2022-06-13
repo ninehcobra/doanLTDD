@@ -16,7 +16,7 @@ const ChannelStack = () => {
         name="Chat"
         component={ChannelScreen}
         options={({ navigation, route }) => ({
-          title: "Chat",
+          title: "Kênh chat",
           headerRight: () => (
             <MembersIcon route={route} navigation={navigation} />
           ),
@@ -26,12 +26,12 @@ const ChannelStack = () => {
       <Stack.Screen
         name="ChannelMembers"
         component={ChannelMembersScreen}
-        options={{ title: "Channel Members" }}
+        options={{ title: "Thành viên của kênh" }}
       />
       <Stack.Screen
         name="InviteMembers"
         component={InviteMembersScreen}
-        options={{ title: "Invite members" }}
+        options={{ title: "Mời thành viên" }}
       />
     </Stack.Navigator>
   );
