@@ -25,11 +25,11 @@ const NewChannelScreen = () => {
       <TextInput
         value={name}
         onChangeText={setName}
-        placeholder="Channel name"
+        placeholder="tên kênh"
         style={styles.input}
         placeholderTextColor="lightgray"
       />
-      <Button title="Create channel" onPress={createChannel} />
+      <Button title="Tạo kênh trò chuyện" onPress={createChannel} />
     </View>
   );
 };

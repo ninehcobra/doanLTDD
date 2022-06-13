@@ -56,7 +56,7 @@ function RootNavigator() {
       <Stack.Screen
         name="NotFound"
         component={NotFoundScreen}
-        options={{ title: "Oops!" }}
+        options={{ title: "Lỗi!!!" }}
       />
     </Stack.Navigator>
   );
