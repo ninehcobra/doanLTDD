@@ -15,6 +15,8 @@ import ChannelMembersScreen from "../screens/ChannelMembersScreen";
 import { FontAwesome5 } from "@expo/vector-icons";
 import NewChannelScreen from "../screens/NewChannelScreen";
 import ChannelStack from "./ChannelStack";
+import { Image,Linking} from 'react-native'
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const Drawer = createDrawerNavigator();
 
@@ -55,7 +57,18 @@ const CustomDrawerContent = (props) => {
     });
   };
 
+  const url = "https://github.com/ninehcobra/doanLTDD";
+
   const { userId } = useAuthContext();
+
+  const openUrl = async (url) => {
+    const isSupported = await Linking.canOpenURL(url);
+    if (isSupported) {
+        await Linking.openURL(url);
+    } else {
+        Alert.alert(`Link này bị lỗi rồi cha ơi đổi đi: ${url}`);
+    }
+}
 
   const privateFilters = { type: "messaging", members: { $in: [userId] } };
   const publicFilters = {
@@ -66,10 +79,10 @@ const CustomDrawerContent = (props) => {
   const logout = () => {
     Auth.signOut();
   };
-
+  const message = "Chào bạn mình cần hỗ trợ!!!"
   return (
     <SafeAreaView {...props} style={{ flex: 1 }}>
-      <Text style={styles.title}>notJust Development</Text>
+      <Text style={styles.title}>App Chat</Text>
 
       <View style={styles.tabs}>
         <Text
@@ -79,7 +92,7 @@ const CustomDrawerContent = (props) => {
             { color: tab === "public" ? "white" : "gray" },
           ]}
         >
-          Public
+          Kênh Chung
         </Text>
         <Text
           onPress={() => setTab("private")}
@@ -88,14 +101,14 @@ const CustomDrawerContent = (props) => {
             { color: tab === "private" ? "white" : "gray" },
           ]}
         >
-          Private
+          Kênh Riêng
         </Text>
       </View>
 
       {tab === "public" ? (
         <>
           <Button
-            title="Start new channel"
+            title="Tạo một kênh mới"
             onPress={() => {
               navigation.navigate("NewChannel");
             }}
@@ -105,7 +118,7 @@ const CustomDrawerContent = (props) => {
       ) : (
         <>
           <Button
-            title="Start new conversation"
+            title="Tạo cuộc trò chuyện "
             onPress={() => {
               navigation.navigate("UserList");
             }}
@@ -113,10 +126,24 @@ const CustomDrawerContent = (props) => {
           <ChannelList onSelect={onChannelSelect} filters={privateFilters} />
         </>
       )}
-
+     
       <Text style={styles.logout} onPress={logout}>
-        Logout
+        Đăng xuất
       </Text>
+      <View style={{flexDirection:'row',alignItems:"center",justifyContent:"center"}}>
+      <TouchableOpacity onPress={() => {
+                    openUrl(url)
+                }} > 
+      <Image style={{height:40,width:40,margin:5}} source={require("../image/github.png")} ></Image>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => {
+                    Linking.openURL(`mailto:20520884@gm.uit.ed.vn?subject=Hỗ trợ&body=${message}`)
+                }}>
+        <Image style={{height:40,width:40,margin:5}} source={require("../image/information.png")}></Image>
+      </TouchableOpacity>
+      </View>
+      
+      
     </SafeAreaView>
   );
 };
