@@ -13,7 +13,7 @@ const ChannelScreen = () => {
   if (!channel) {
     return (
       <View style={styles.errorContainer}>
-        <Image>
+        <Image style={{width:120,height:120}} source={require("../image/talking.png")}>
 
         </Image>
         <Text style={styles.errorText}>Chọn kênh để bắt đầu trò chuyện</Text>
