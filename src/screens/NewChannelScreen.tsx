@@ -10,11 +10,11 @@ const NewChannelScreen = () => {
   const [name, setName] = useState("");
   const { client } = useChatContext();
   const { userId } = useAuthContext();
-
+  const [image, setImage] = useState("");
   const navigation = useNavigation();
 
   const createChannel = async () => {
-    const channel = client.channel("team", uuidv4(), { name });
+    const channel = client.channel("team", uuidv4(), { name ,image});
     await channel.create();
     await channel.addMembers([userId]);
     navigation.navigate("ChannelScreen", { channel });
@@ -28,7 +28,13 @@ const NewChannelScreen = () => {
         placeholder="tên kênh"
         style={styles.input}
         placeholderTextColor="lightgray"
-      />
+      /><TextInput
+      value={image}
+      onChangeText={setImage}
+      placeholder="Link ảnh"
+      style={styles.input}
+      placeholderTextColor="lightgray"
+    />
       <Button title="Tạo kênh trò chuyện" onPress={createChannel} />
     </View>
   );
