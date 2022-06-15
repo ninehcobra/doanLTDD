@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet,Image } from "react-native";
 import React from "react";
 import { useRoute, useNavigation } from "@react-navigation/native";
-import { Channel, MessageList, MessageInput } from "stream-chat-expo";
+import { Channel, MessageList, MessageInput, OverlayProvider } from "stream-chat-expo";
 
 const ChannelScreen = () => {
   const route = useRoute();
@@ -22,10 +22,15 @@ const ChannelScreen = () => {
   }
 
   return (
-    <Channel channel={channel} key={channel.data.id}>
+    <OverlayProvider>
+
+
+      <Channel channel={channel} key={channel.data.id}>
       <MessageList />
       <MessageInput />
     </Channel>
+    </OverlayProvider>
+    
   );
 };
 
