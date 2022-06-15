@@ -29,7 +29,7 @@ const ChannelMembersScreen = () => {
       )}
       ListHeaderComponent={() => (
         <Button
-          title="Mời thành viên"
+          title="Thêm thành viên"
           onPress={() => {
             navigation.navigate("InviteMembers", { channel });
           }}

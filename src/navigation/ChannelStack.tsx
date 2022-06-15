@@ -26,12 +26,12 @@ const ChannelStack = () => {
       <Stack.Screen
         name="ChannelMembers"
         component={ChannelMembersScreen}
-        options={{ title: "Thành viên của kênh" }}
+        options={{ title: "Thành viên của kênh chat" }}
       />
       <Stack.Screen
         name="InviteMembers"
         component={InviteMembersScreen}
-        options={{ title: "Mời thành viên" }}
+        options={{ title: "Thêm thành viên" }}
       />
     </Stack.Navigator>
   );

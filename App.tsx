@@ -29,7 +29,7 @@ function App() {
 
   useEffect(() => {
     return () => {
-        client.disconnectUser();
+      client.disconnectUser();
     };
   }, []);
 

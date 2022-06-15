@@ -56,7 +56,7 @@ const InviteMembersScreen = () => {
       )}
       ListHeaderComponent={() =>
         !!selectedUserIds.length && (
-          <Button title="Mời" onPress={inviteUsers} />
+          <Button title="Thêm" onPress={inviteUsers} />
         )
       }
     />
