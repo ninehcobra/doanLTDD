@@ -28,6 +28,8 @@ function App() {
   const isLoadingComplete = useCachedResources();
 
   useEffect(() => {
+
+
     return () => {
       client.disconnectUser();
     };

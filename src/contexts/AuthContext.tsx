@@ -32,9 +32,7 @@ const AuthContextComponent = ({ children, client }) => {
       token
     );
 
-    const channel = client.channel("livestream", "public", { name: "Public" });
-    await channel.watch();
-
+    
     setUserId(sub);
   };
 
