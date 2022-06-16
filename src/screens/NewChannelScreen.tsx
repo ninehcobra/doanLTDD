@@ -1,4 +1,4 @@
-import { View, Text, TextInput, StyleSheet } from "react-native";
+import { View, Text, TextInput, StyleSheet, Image, Alert } from "react-native";
 import React, { useState } from "react";
 import Button from "../components/Button";
 import { useChatContext } from "stream-chat-expo";
@@ -14,27 +14,62 @@ const NewChannelScreen = () => {
   const navigation = useNavigation();
 
   const createChannel = async () => {
-    const channel = client.channel("team", uuidv4(), { name ,image});
+    if(name==""||image=="")
+    {
+     Alert.alert("Vui lòng nhập đủ thông tin")
+    }
+    else{const channel = client.channel("team", uuidv4(), { name, image });
     await channel.create();
     await channel.addMembers([userId]);
-    navigation.navigate("ChannelScreen", { channel });
+    navigation.navigate("ChannelScreen", { channel });}
+    
+    
   };
 
   return (
     <View style={styles.root}>
-      <TextInput
-        value={name}
-        onChangeText={setName}
-        placeholder="tên kênh"
+      <View style={{ flexDirection: "row" }}>
+        <View style={{ flex: 10, alignItems: 'center', justifyContent: 'center' }}>
+          <Image source={require('../image/name.png')} style={{ width: 45, height: 45, padding: 10}}>
+
+          </Image>
+
+        </View>
+        <View style={{ flex: 90 }}>
+
+          <TextInput
+            value={name}
+            onChangeText={setName}
+            placeholder="Tên kênh"
+            style={styles.input}
+            placeholderTextColor="lightgray"
+          />
+        </View>
+
+      </View>
+      <View style={{ flexDirection: "row",marginTop:10 }}>
+        <View style={{ flex: 10, alignItems: 'center', justifyContent: 'center' }}>
+          <Image source={require('../image/pic.png')} style={{ width: 45, height: 45, padding: 10 }}>
+
+          </Image>
+
+        </View>
+        <View style={{ flex: 90 }}>
+
+        <TextInput
+        value={image}
+        onChangeText={setImage}
+        placeholder="Link ảnh"
         style={styles.input}
         placeholderTextColor="lightgray"
-      /><TextInput
-      value={image}
-      onChangeText={setImage}
-      placeholder="Link ảnh"
-      style={styles.input}
-      placeholderTextColor="lightgray"
-    />
+      />
+        </View>
+
+      </View>
+
+
+
+     
       <Button title="Tạo kênh trò chuyện" onPress={createChannel} />
     </View>
   );

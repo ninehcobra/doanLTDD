@@ -18,6 +18,7 @@ import LinkingConfiguration from "./LinkingConfiguration";
 import SignUpScreen from "../screens/SignUpScreen";
 import { useAuthContext } from "../contexts/AuthContext";
 import DrawerNavigator from "./DrawerNavigator";
+import info from "../screens/Info";
 
 export default function Navigation({
   colorScheme,
@@ -53,6 +54,7 @@ function RootNavigator() {
         component={DrawerNavigator}
         options={{ headerShown: false }}
       />
+      
       <Stack.Screen
         name="NotFound"
         component={NotFoundScreen}

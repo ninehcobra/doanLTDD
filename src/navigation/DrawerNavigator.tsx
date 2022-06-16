@@ -17,7 +17,8 @@ import NewChannelScreen from "../screens/NewChannelScreen";
 import ChannelStack from "./ChannelStack";
 import { Image, Linking } from 'react-native'
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
-        
+import info from "../screens/Info";
+
 
 
 
@@ -34,6 +35,9 @@ const DrawerNavigator = () => {
           headerShown: false,
         }}
       />
+      <Drawer.Screen name="Info"
+        component={info}
+        options={{ headerShown: false }}/>
       <Drawer.Screen
         name="UserList"
         component={UserListScreen}
@@ -88,32 +92,46 @@ const CustomDrawerContent = (props) => {
 
 
 
-  
-  const ok= async (text)=>
-  {
+
+  const ok = async (text) => {
     await setQuery(text)
     alert(Query)
   }
-  const [Query,setQuery]=useState("")
+  const [Query, setQuery] = useState("")
   const message = "Chào bạn mình cần hỗ trợ!!!"
   return (
-<KeyboardAvoidingView {...props} style={{ flex: 1 }}>
-    
-     
-      <View style={{flex:15,flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
-        <Image source={require('../image/chat.png')}style={{height:35,width:35,marginTop:25}}></Image>
-      <Text style={styles.title}>App Chat</Text>
+    <KeyboardAvoidingView {...props} style={{ flex: 1 }}>
+
+
+      <View style={{ flex: 15, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+       
+
+        <Image source={require('../image/chat.png')} style={{ height: 35, width: 35, marginTop: 25 }}></Image>
+        <Text style={styles.title}>App Chat</Text>
+      
+       <TouchableOpacity onPress={()=>{navigation.navigate(("Info"))}}>
+
+       <Image source={require('../image/user.png')} style={{ height: 35, width: 35, marginTop: 25,marginLeft:90 }}></Image>
+
+       </TouchableOpacity>
+
       </View>
-      <View style={{flex:10,flexDirection:'row'}}>
-         
-         <View style={{flex:1,backgroundColor:"gray",flexDirection:'row',padding:10,alignItems:'center',borderColor:'white',borderRadius:20}}>
-         <Image source={require('../image/search.png')} style={{ width:25,height:25}}> 
-            </Image>
-              <TextInput placeholder="Tìm kiếm" style={{margin:5,alignItems:'center',color:'white',fontSize:16,flex:1, }} onChangeText={text => {ok(text)}} >
-              
-              </TextInput>
-         </View>
-         
+
+
+
+
+
+
+      <View style={{ flex: 10, flexDirection: 'row' }}>
+
+        <View style={{ flex: 1, backgroundColor: "gray", flexDirection: 'row', padding: 10, alignItems: 'center', borderColor: 'white', borderRadius: 20 }}>
+          <Image source={require('../image/search.png')} style={{ width: 25, height: 25 }}>
+          </Image>
+          <TextInput placeholder="Tìm kiếm" style={{ margin: 5, alignItems: 'center', color: 'white', fontSize: 16, flex: 1, }} onChangeText={text => { ok(text) }} >
+
+          </TextInput>
+        </View>
+
       </View>
       <View style={{ flex: 45 }}>
         <Text
@@ -125,33 +143,33 @@ const CustomDrawerContent = (props) => {
           Cộng đồng
         </Text>
         <Button
-            title="Tạo một kênh mới"
-            onPress={() => {
-              navigation.navigate("NewChannel");
-            }}
-          />
+          title="Tạo một kênh mới"
+          onPress={() => {
+            navigation.navigate("NewChannel");
+          }}
+        />
         <ChannelList onSelect={onChannelSelect} filters={publicFilters} />
 
 
       </View>
-      
+
 
       <View style={{ flex: 45 }}>
-      <Text
-          
+        <Text
+
           style={[
             styles.groupTitle,
-            { color:"white" },
+            { color: "white" },
           ]}
         >
-         Riêng tư
+          Riêng tư
         </Text>
         <Button
-            title="Tạo cuộc trò chuyện "
-            onPress={() => {
-              navigation.navigate("UserList");
-            }}
-          />
+          title="Tạo cuộc trò chuyện "
+          onPress={() => {
+            navigation.navigate("UserList");
+          }}
+        />
         <ChannelList onSelect={onChannelSelect} filters={privateFilters} />
 
       </View>
@@ -177,7 +195,7 @@ const CustomDrawerContent = (props) => {
 
 
 
-    
+
     </KeyboardAvoidingView>
   );
 };
@@ -189,7 +207,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     fontSize: 16,
     margin: 10,
-    marginTop:35,
+    marginTop: 35,
   },
   groupTitle: {
     margin: 10,
