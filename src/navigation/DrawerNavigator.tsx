@@ -52,13 +52,13 @@ const DrawerNavigator = () => {
       <Drawer.Screen
         name="UserList"
         component={UserListScreen}
-        options={{ title: "Users" }}
+        options={{ title: "Người dùng" }}
       />
 
       <Drawer.Screen
         name="NewChannel"
         component={NewChannelScreen}
-        options={{ title: "New Channel" }}
+        options={{ title: "Tạo Kênh Mới" }}
       />
     </Drawer.Navigator>
   );
@@ -97,6 +97,7 @@ const CustomDrawerContent = (props) => {
 
   const logout = () => {
     Auth.signOut();
+    
   };
 
 

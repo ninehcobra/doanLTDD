@@ -1,134 +1,136 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, TouchableHighlight, Animated, Modal, Text, KeyboardAvoidingView, TouchableOpacity ,Image} from "react-native";
+import { View, StyleSheet, TouchableHighlight, Animated, Modal, Text, KeyboardAvoidingView, TouchableOpacity ,Image, Alert} from "react-native";
 
 import { FontAwesome5, Feather } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { TextInput } from "react-native-gesture-handler";
 import info from "../screens/Info"
 import b from "./GetChannel";
-import { useChatContext } from "stream-chat-expo";
+import { Flag, useChatContext } from "stream-chat-expo";
 import { useAuthContext } from "../contexts/AuthContext";
 
 
-function getInfo()
-{
 
-    const { client } = useChatContext();
-    const { userId } = useAuthContext();
-    const[user,setUser]=useState([]);
-    useEffect( () => {
-        getInfo();
-     }, [])
-   
-   
-     
-   const getInfo = async()=>{
-       const response = await client.queryUsers({ id: userId });
-        setUser(response.users)
-     
-   }
-   return(user.toString())
-
+function FloatingButton1 () {
+  const [isVisible,setVisible]=useState(false)
+  const[user,setUser]=useState([]);
+  const { client } = useChatContext();
+const { userId } = useAuthContext();
+useEffect( () => {
+    getInfo();
+ }, [])
+ const getInfo = async()=>{
+    const response = await client.queryUsers({ id: userId });
+     setUser(response.users)
 }
-class FloatingButton extends React.Component {
-    mode = new Animated.Value(0);
-    buttonSize = new Animated.Value(1);
-     
+const [name,setName]=useState("")
+const [image,setImage]=useState("")
+const Update=async()=>{
 
-    handlePress = () => {
-        Animated.sequence([
-            Animated.timing(this.buttonSize, {
-                toValue: 0.95,
-                duration: 10
-            }),
-            Animated.timing(this.buttonSize, {
-                toValue: 1
-            }),
-            Animated.timing(this.mode, {
-                toValue: this.mode._value === 0 ? 1 : 0
-            })
-        ]).start();
-    };
-
-    state = {
-        openModal: false
+    if(name==""&&image!="")
+    {
+    const update = await channel.update(
+        {
+            image:image,
+        },
+    );
+    update
+    console.log(channel.data.name)
+    console.log(channel.data.image)
     }
-    onClickButton = e => {
-        e.preventDefault()
-        this.setState({ openModal: true })
+    else if(name!=""&&image=="")
+    {
+        const update = await channel.update(
+            {
+                name: name,
+            },
+        );
+        update
+    console.log(channel.data.name,channel.data.image)
+    console.log(channel.data.image)
     }
-    onCloseModal = () => {
-        this.setState({ openModal: false })
+    else if(name==""&&image==""){
+        const update = await channel.update(
+            {
+                name: channel.data.name,
+                image:channel.data.image,
+            },
+        );
+        update
+    console.log(channel.data.name,channel.data.image)
+    console.log(channel.data.image)
     }
-    render() {
-        const thermometerX = this.mode.interpolate({
-            inputRange: [0, 1],
-            outputRange: [-24, -100]
-        });
+    else {
+        const update = await channel.update(
+            {
+                name: name,
+                image:image,
+            },
+        );
+        update
+    console.log(channel.data.name,channel.data.image)
+    console.log(channel.data.image)
+    }
+  
+    setVisible(!isVisible)
+}
+const navigation = useNavigation();
+const DeleteQuery=async()=>{
+    const destroy = await channel.delete();
+    destroy
+    Alert.alert("Xoá thành công")
+    navigation.navigate("Root")
+}
 
-        const thermometerY = this.mode.interpolate({
-            inputRange: [0, 1],
-            outputRange: [-50, -100]
-        });
-
-        const timeX = this.mode.interpolate({
-            inputRange: [0, 1],
-            outputRange: [-24, -24]
-        });
-
-        const timeY = this.mode.interpolate({
-            inputRange: [0, 1],
-            outputRange: [-50, -150]
-        });
-
-        const pulseX = this.mode.interpolate({
-            inputRange: [0, 1],
-            outputRange: [-24, 50]
-        });
-
-        const pulseY = this.mode.interpolate({
-            inputRange: [0, 1],
-            outputRange: [-50, -100]
-        });
-
-        const rotation = this.mode.interpolate({
-            inputRange: [0, 1],
-            outputRange: ["0deg", "45deg"]
-        });
-
-        const sizeStyle = {
-            transform: [{ scale: this.buttonSize }]
-        };
+function Delete()
+{
+    
+    Alert.alert(
+        "Thông Báo",
+        "Bạn có chắc là bạn muốn xoá kênh?",
+        [
+          {
+            text: "Không",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel"
+          },
+          { text: "Có", onPress: () => {DeleteQuery()}}
+        ]
+      );
+}
 
 
+
+const route = useRoute();
+const channel = route.params.channel;
         return (
        <KeyboardAvoidingView style={{flex:1}} behavior={Platform.OS === "ios" ? "padding" : "height"}>
-            <View style={{ position: "absolute", alignItems: "center" }}>
-                <Animated.View style={{ position: "absolute", left: thermometerX, top: thermometerY }}>
+            <View style={{  alignItems: "center" ,flexDirection:'row',justifyContent:'center'}}>
+               <TouchableOpacity style={{marginRight:40}}>
                     <View style={styles.secondaryButton}>
-                        <Feather onPress={this.onClickButton} name="edit" size={24} color="#FFF" />
+                        <Feather onPress={()=>setVisible(!isVisible)} name="edit" size={24} color="#FFF" />
                         <Modal animationType="slide"
                             transparent={true}
-                            visible={this.state.openModal}
+                            visible={isVisible}
                             style={{ justifyContent: 'center', alignItems: 'center' }}>
                       <KeyboardAvoidingView  behavior={Platform.OS === "ios" ? "padding" : "height"}>
                           <View style={{ backgroundColor: "#151515", height: 240, width: 350, alignSelf: 'center', marginTop: 50, justifyContent: 'center' }}>
                                 <Text style={{ color: 'white', fontSize: 25, fontWeight: 'bold', marginLeft: 10 }}>NAME:</Text>
                                 <View style={{ backgroundColor: 'gray', height: 45, justifyContent: 'center', alignItems: 'center', marginBottom: 10, marginLeft: 10, marginRight: 10, borderRadius: 10 }}>
-                                    <TextInput style={{ color: 'white', fontSize: 19 }}></TextInput>
+                                    <TextInput onChangeText={text => setName(text)} placeholder={channel.data.name} style={{ color: 'white', fontSize: 19 }}></TextInput>
                                 </View>
 
                                 <Text style={{ color: 'white', fontSize: 25, fontWeight: 'bold', marginLeft: 10 }}>IMAGE:</Text>
                                 <View style={{ backgroundColor: 'gray', height: 45, justifyContent: 'center', alignItems: 'center', marginBottom: 10, marginLeft: 10, marginRight: 10, borderRadius: 10 }}>
-                                    <TextInput style={{ color: 'white', fontSize: 19 }}></TextInput>
+                                    <TextInput onChangeText={text => setImage(text)} placeholder={channel.data.image} style={{ color: 'white', fontSize: 19 }}></TextInput>
                                 </View>
                                 <View style={{flexDirection:'row'}}>
-                                <TouchableOpacity style={{justifyContent:'center',alignItems:'center',marginLeft:20}} onPress={this.onCloseModal}>
+                                <TouchableOpacity style={{justifyContent:'center',alignItems:'center',marginLeft:20}} onPress={()=>setVisible(!isVisible)}>
                                     <Text style={{color:'white',fontSize:20,fontWeight:'bold'}}>HUỶ</Text>
                                 </TouchableOpacity>
                                 <View style={{flex:60}}></View>
-                                <TouchableOpacity style={{justifyContent:'center',alignItems:'center',marginRight:20}} onPress={()=>console.log(getInfo)}>
+                                <TouchableOpacity style={{justifyContent:'center',alignItems:'center',marginRight:20}} onPress={Update}>
                                     <Text style={{color:'white',fontSize:20,fontWeight:'bold'}}>CẬP NHẬT</Text>
                                 </TouchableOpacity>
                                 </View>
@@ -140,34 +142,28 @@ class FloatingButton extends React.Component {
                             
                         </Modal>
                     </View>
-                </Animated.View>
+                    </TouchableOpacity>
 
 
 
 
 
-                <Animated.View style={{ position: "absolute", left: timeX, top: timeY }}>
+           <TouchableOpacity onPress={()=>navigation.navigate("InviteMembers", { channel })}>
                     <View style={styles.secondaryButton}>
                         <Feather name="plus" size={24} color="#FFF" />
                     </View>
-                </Animated.View>
-                <Animated.View style={{ position: "absolute", left: pulseX, top: pulseY }}>
+                    </TouchableOpacity>
+               <TouchableOpacity style={{marginLeft:40}} onPress={Delete}>
                     <View style={styles.secondaryButton}>
                         <Feather name="trash" size={24} color="#FFF" />
                     </View>
-                </Animated.View>
-                <Animated.View style={[styles.button, sizeStyle]}>
-                    <TouchableHighlight onPress={this.handlePress} underlayColor="#7F58FF">
-                        <Animated.View style={{ transform: [{ rotate: rotation }] }}>
-                            <FontAwesome5 name="wrench" size={24} color="#FFF" />
-                        </Animated.View>
-                    </TouchableHighlight>
-                </Animated.View>
+              </TouchableOpacity>
+                
             </View>
             </KeyboardAvoidingView>
         );
     }
-}
+
 
 const styles = StyleSheet.create({
     button: {
@@ -177,7 +173,6 @@ const styles = StyleSheet.create({
         height: 72,
         borderRadius: 36,
         backgroundColor: Colors.light.tint,
-        position: "absolute",
         marginTop: -60,
         shadowColor: "#7F58FF",
         shadowRadius: 5,
@@ -187,7 +182,6 @@ const styles = StyleSheet.create({
         borderColor: "#FFFFFF"
     },
     secondaryButton: {
-        position: "absolute",
         alignItems: "center",
         justifyContent: "center",
         width: 48,
@@ -196,4 +190,4 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.light.tint,
     }
 });
-export default FloatingButton
+export default FloatingButton1

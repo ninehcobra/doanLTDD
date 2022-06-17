@@ -1,15 +1,21 @@
 import { ConsoleLogger } from '@aws-amplify/core';
 import React, { useEffect, useState } from 'react'
-import { View,Text, TouchableOpacity,AppRegistry,Image, Alert } from 'react-native'
+import { View,Text, TouchableOpacity,AppRegistry,Image, Alert, Modal, KeyboardAvoidingView, TextInput } from 'react-native'
 import { FlatList } from 'react-native-gesture-handler';
 import { SafeAreaConsumer } from 'react-native-safe-area-context';
 import { useChatContext } from 'stream-chat-expo';
 import { useAuthContext } from '../contexts/AuthContext';
-
+import { AsyncStorage } from 'react-native';
+import { Auth } from 'aws-amplify';
 
 
 export default function info()
 {
+  const [imageLink,setImagelink]=useState("")
+  const logout = () => {
+    Auth.signOut();
+    client.disconnectUser();
+  };
    const[user,setUser]=useState([]);
    const { client } = useChatContext();
 const { userId } = useAuthContext();
@@ -18,12 +24,12 @@ const { userId } = useAuthContext();
 const updates = [{
     id: idchange,
     set: {
-        image:"getwallpapers.com/wallpaper/full/d/4/4/812304-cool-yasuo-wallpapers-3840x2160-iphone.jpg"
+        image:imageLink,
     }
 
 }];
 
-
+const [isVisible,setVisible]=useState(false)
 
 
 
@@ -46,9 +52,21 @@ const getInfo = async()=>{
   
 }
 const changeImage=async()=>
-{
+{  
+  if(imageLink=="")
+  {
+    Alert.alert("Cập nhật ảnh thất bại")
+   setVisible(!isVisible)
+  }
+  else{
     const response = await client.partialUpdateUsers(updates);
-    console.log(response)
+    console.log(response);
+    Alert.alert("Đổi ảnh thành công!! Cần đăng nhập lại để cập nhật <3")
+    logout()
+    
+  }
+  
+    
     
   
 }
@@ -61,13 +79,40 @@ const changeImage=async()=>
         </View>
         <View style={{flex:90}}>  
              <View  style={{flex:30,justifyContent:'center',alignItems:'center'}}>
-                <Image source={linkpic} style={{width:140,height:140}}>
+                <Image source={linkpic} style={{width:140,height:140,borderRadius:70}}>
 
                 </Image>
-                <TouchableOpacity onPress={changeImage} style={{flexDirection:'row',alignItems:'center',justifyContent:'center'}}>
+                <TouchableOpacity onPress={()=>setVisible(!isVisible)} style={{flexDirection:'row',alignItems:'center',justifyContent:'center'}}>
                  <Image source={require("../image/edit.png")} style={{width:25,height:25,tintColor:'white'}}></Image>
                 <Text style={{color:'white',fontSize:20,fontWeight:'bold'}}>Sửa ảnh</Text>
                 </TouchableOpacity>
+                <Modal animationType="slide"
+                            transparent={true}
+                            visible={isVisible}
+                            style={{ justifyContent: 'center', alignItems: 'center' }}>
+                      <KeyboardAvoidingView  behavior={Platform.OS === "ios" ? "padding" : "height"}>
+                          <View style={{ backgroundColor: "#151515", height: 140, width: 350, alignSelf: 'center', marginTop: 50, justifyContent: 'center' }}>
+                                <Text style={{ color: 'white', fontSize: 25, fontWeight: 'bold', marginLeft: 10 }}>Image Link:</Text>
+                                <View style={{ backgroundColor: 'gray', height: 45, justifyContent: 'center', alignItems: 'center', marginBottom: 10, marginLeft: 10, marginRight: 10, borderRadius: 10 }}>
+                                    <TextInput onChangeText={text => setImagelink(text)} placeholder={user.map((m)=>m.image).toString()} style={{ color: 'white', fontSize: 19 }}></TextInput>
+                                </View>
+
+                                <View style={{flexDirection:'row'}}>
+                                <TouchableOpacity style={{justifyContent:'center',alignItems:'center',marginLeft:20}} onPress={()=>setVisible(!isVisible)}>
+                                    <Text style={{color:'white',fontSize:20,fontWeight:'bold'}}>HUỶ</Text>
+                                </TouchableOpacity>
+                                <View style={{flex:60}}></View>
+                                <TouchableOpacity style={{justifyContent:'center',alignItems:'center',marginRight:20}} onPress={changeImage}>
+                                    <Text style={{color:'white',fontSize:20,fontWeight:'bold'}}>CẬP NHẬT</Text>
+                                </TouchableOpacity>
+                                </View>
+                               
+                                
+                            </View>
+                            </KeyboardAvoidingView>
+                         
+                            
+                        </Modal>
                 
              </View>
              <View style={{flex:70}}>

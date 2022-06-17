@@ -34,23 +34,18 @@ function ChannelMembersScreen(){
           )}
           ListHeaderComponent={() => (
             <Button
-              title="Thêm thành viên"
-              onPress={() => {
-                navigation.navigate("InviteMembers", { channel });
-              }}
+              title="Thành viên của nhóm"
+              
             />
           )}
         />
           
       </View>
       <View style={{ flex: 10, flexDirection: 'row' }}>
-        <View style={{ flex: 40 }}>
-
-        </View>
-        <View style={{ flex: 20,justifyContent:'center',alignItems:'center' }}>
+      
+    
         <FloatingButton></FloatingButton>
-        </View>
-         <View style={{flex:40}}/>
+      
        
 
 

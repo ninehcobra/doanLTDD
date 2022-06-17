@@ -2,18 +2,44 @@ import { Auth, API, graphqlOperation } from "aws-amplify";
 import { createContext, useState, useContext, useEffect } from "react";
 import { getStreamToken } from "../graphql/queries";
 import { Alert } from "react-native";
-
+import { AsyncStorage } from 'react-native';
+import linking from "../navigation/LinkingConfiguration";
+import { getLastReceivedMessage, useCreateInputMessageInputContext } from "stream-chat-expo";
 const AuthContext = createContext({
   userId: null,
   setUserId: (newId: string) => {},
 });
 
+
 const AuthContextComponent = ({ children, client }) => {
   const [userId, setUserId] = useState(null);
+  const [imagelink,setimagelink]=useState("http://i.pinimg.com/originals/ff/a0/9a/ffa09aec412db3f54deadf1b3781de2a.png")
+  const [userimage,setuserimage]=useState([])
 
+
+
+
+
+  const getimagelink = async () => {
+    const userData = await Auth.currentAuthenticatedUser();
+    const { sub, email } = userData.attributes;
+    const response = await client.queryUsers({ id: sub});
+    await setuserimage(response.users);
+   const piclinkkk=userimage.map((m)=>m.image).toString()
+   console.log(123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123)
+   if(piclinkkk!="")
+   {
+    setimagelink(piclinkkk)
+   }
+  };
+  
   const connectStreamChatUser = async () => {
     const userData = await Auth.currentAuthenticatedUser();
     const { sub, email } = userData.attributes;
+   
+  
+   
+    
 
     const tokenResponse = await API.graphql(graphqlOperation(getStreamToken));
     const token = tokenResponse?.data?.getStreamToken;
@@ -26,8 +52,7 @@ const AuthContextComponent = ({ children, client }) => {
       {
         id: sub,
         name: email,
-        image:
-          "https://i.pinimg.com/originals/ff/a0/9a/ffa09aec412db3f54deadf1b3781de2a.png",
+        image: imagelink,
       },
       token
     );
@@ -36,8 +61,13 @@ const AuthContextComponent = ({ children, client }) => {
     setUserId(sub);
   };
 
+
+ 
   useEffect(() => {
+    getimagelink();
     connectStreamChatUser();
+    
+    
   }, []);
 
   return (

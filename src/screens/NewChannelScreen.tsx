@@ -22,6 +22,7 @@ const NewChannelScreen = () => {
     await channel.create();
     await channel.addMembers([userId]);
     navigation.navigate("ChannelScreen", { channel });}
+    n
     
     
   };
@@ -58,11 +59,14 @@ const NewChannelScreen = () => {
 
         <TextInput
         value={image}
+        
         onChangeText={setImage}
         placeholder="Link ảnh"
         style={styles.input}
         placeholderTextColor="lightgray"
-      />
+      >
+        
+      </TextInput>
         </View>
 
       </View>

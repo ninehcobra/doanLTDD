@@ -7,9 +7,11 @@ import ChannelScreen from "../screens/ChannelScreen";
 import InviteMembersScreen from "../screens/InviteMembersScreen";
 import { AntDesign } from "@expo/vector-icons";
 import {FloatingButton} from "../components/FloatingButton"
+import DrawerNavigator from "./DrawerNavigator";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 
 const Stack = createNativeStackNavigator();
-
+const Drawer = createDrawerNavigator();
 const ChannelStack = () => {
   return (
     <Stack.Navigator>
@@ -27,13 +29,19 @@ const ChannelStack = () => {
       <Stack.Screen
         name="ChannelMembers"
         component={ChannelMembersScreen}
-        options={{ title: "Thành viên của kênh chat" }}
+        options={{ title: "Thông tin của nhóm" }}
       />
       <Stack.Screen
         name="InviteMembers"
         component={InviteMembersScreen}
         options={{ title: "Thêm thành viên" }}
       />
+      <Stack.Screen name="Root"
+        component={DrawerNavigator}
+        options={{
+          headerShown: false,
+        }}
+       />
     </Stack.Navigator>
   );
 };
