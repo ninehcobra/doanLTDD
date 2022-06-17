@@ -14,7 +14,7 @@ export default function info()
   const [imageLink,setImagelink]=useState("")
   const logout = () => {
     Auth.signOut();
-    client.disconnectUser();
+   
   };
    const[user,setUser]=useState([]);
    const { client } = useChatContext();
