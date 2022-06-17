@@ -4,11 +4,11 @@ import {
 } from "@react-navigation/drawer";
 import { Text, StyleSheet, View, Pressable, KeyboardAvoidingView, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { ChannelList } from "stream-chat-expo";
+import { ChannelList, useChatContext } from "stream-chat-expo";
 import { useAuthContext } from "../contexts/AuthContext";
 import ChannelScreen from "../screens/ChannelScreen";
 import { Auth } from "aws-amplify";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import UserListScreen from "../screens/UserListScreen";
 import Button from "../components/Button";
 import ChannelMembersScreen from "../screens/ChannelMembersScreen";
@@ -26,6 +26,17 @@ import info from "../screens/Info";
 const Drawer = createDrawerNavigator();
 
 const DrawerNavigator = () => {
+
+
+ 
+
+
+
+
+
+
+
+
   return (
     <Drawer.Navigator drawerContent={CustomDrawerContent}>
       <Drawer.Screen
@@ -91,13 +102,60 @@ const CustomDrawerContent = (props) => {
 
 
 
+  const { client, setActiveChannel } = useChatContext();
+  const [query, setQuery] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [teamChannels, setTeamChannels] = useState([])
+  const [directChannels, setDirectChannels] = useState([])
+
+  useEffect(() => {
+    if(!query) {
+        setTeamChannels([]);
+        setDirectChannels([]);
+    }
+}, [query])
 
 
-  const ok = async (text) => {
-    await setQuery(text)
-    alert(Query)
+  const onSearch = (event) => {
+    event.preventDefault();
+
+    setLoading(true);
+    setQuery(event.target.value);
+    getChannels(event.target.value)
+}
+
+const getChannels = async (text) => {
+  try {
+      const channelResponse = client.queryChannels({
+          type: 'team', 
+          name: { $autocomplete: text }, 
+          members: { $in: [client.userID]}
+      });
+      const userResponse = client.queryUsers({
+          id: { $ne: client.userID },
+          name: { $autocomplete: text }
+      })
+
+      const [channels, { users }] = await Promise.all([channelResponse, userResponse]);
+
+      if(channels.length) setTeamChannels(channels);
+      if(users.length) setDirectChannels(users);
+  } catch (error) {
+      setQuery('')
   }
-  const [Query, setQuery] = useState("")
+}
+
+const setChannel = (channel) => {
+  setQuery('');
+  setActiveChannel(channel);
+}
+
+
+
+
+
+
+
   const message = "Chào bạn mình cần hỗ trợ!!!"
   return (
     <KeyboardAvoidingView {...props} style={{ flex: 1 }}>
@@ -127,7 +185,7 @@ const CustomDrawerContent = (props) => {
         <View style={{ flex: 1, backgroundColor: "gray", flexDirection: 'row', padding: 10, alignItems: 'center', borderColor: 'white', borderRadius: 20 }}>
           <Image source={require('../image/search.png')} style={{ width: 25, height: 25 }}>
           </Image>
-          <TextInput placeholder="Tìm kiếm" style={{ margin: 5, alignItems: 'center', color: 'white', fontSize: 16, flex: 1, }} onChangeText={text => { ok(text) }} >
+          <TextInput placeholder="Tìm kiếm" style={{ margin: 5, alignItems: 'center', color: 'white', fontSize: 16, flex: 1, }} >
 
           </TextInput>
         </View>

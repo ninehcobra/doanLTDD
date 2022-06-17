@@ -6,6 +6,7 @@ import ChannelMembersScreen from "../screens/ChannelMembersScreen";
 import ChannelScreen from "../screens/ChannelScreen";
 import InviteMembersScreen from "../screens/InviteMembersScreen";
 import { AntDesign } from "@expo/vector-icons";
+import {FloatingButton} from "../components/FloatingButton"
 
 const Stack = createNativeStackNavigator();
 

@@ -1,11 +1,12 @@
-import { View, Text, FlatList,Image } from "react-native";
+import { View, Text, FlatList,Image, KeyboardAvoidingView } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import UserListItem from "../components/UserListItem";
 import Button from "../components/Button";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import FloatingButton from "../components/FloatingButton"
 
-const ChannelMembersScreen = () => {
+function ChannelMembersScreen(){
   const [members, setMembers] = useState([]);
   const navigation = useNavigation();
 
@@ -22,6 +23,7 @@ const ChannelMembersScreen = () => {
   }, [channel]);
 
   return (
+    <KeyboardAvoidingView style={{flex:1}} behavior={Platform.OS === "ios" ? "padding" : "height"}>
     <View style={{flex:1}}>
       <View style={{flex:90}}>
         <FlatList
@@ -39,21 +41,22 @@ const ChannelMembersScreen = () => {
             />
           )}
         />
+          
       </View>
-      <View style={{flex:10,flexDirection:'row'}}>
-              <View style={{flex:90}}>
+      <View style={{ flex: 10, flexDirection: 'row' }}>
+        <View style={{ flex: 40 }}>
 
-              </View>
-              <View style={{flex:15}} >
-                <TouchableOpacity>
-                <Image source={require('../image/setting.png')}style={{width:40,height:40,margin:10}}>
+        </View>
+        <View style={{ flex: 20,justifyContent:'center',alignItems:'center' }}>
+        <FloatingButton></FloatingButton>
+        </View>
+         <View style={{flex:40}}/>
+       
 
-                   </Image>
-                </TouchableOpacity>
 
-              </View>
       </View>
     </View>
+    </KeyboardAvoidingView>
 
 
   );
